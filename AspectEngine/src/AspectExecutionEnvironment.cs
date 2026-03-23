@@ -19,7 +19,7 @@ public readonly struct AspectExecutionEnvironment<TData>
 
     public AspectExecutionEnvironment<TData> Run<TAspect>() where TAspect : struct, IAspectMetadata
     {
-        //TODO:: need to find a way to get the Injectable from the AspectMetadata
+        //TODO:: need to find a way to get the [Injectable] from the [Injectee]/Apect<>/AspectMetadata
 
         //Create Injectable
         //Create Aspect
