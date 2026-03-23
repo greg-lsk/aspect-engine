@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AspectDemo.Aspects.Logging;
 
-internal readonly struct EvaluationLoggingDependencies : IInjectableMetadata
+internal readonly struct EvaluationLoggingDependencies : IEvaluationLoggingDependencies, IInjectableMetadata
 {
     private readonly IServiceProvider _serviceProvider;
 
