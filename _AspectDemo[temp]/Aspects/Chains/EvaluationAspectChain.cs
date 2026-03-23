@@ -4,8 +4,15 @@ using AspectDemo.Aspects.Logging;
 
 namespace AspectDemo.Aspects.Chains;
 
-internal readonly struct EvaluationAspectChain : IAspectChain<int>
+internal readonly partial struct EvaluationAspectChain : IAspectChain<int>
 {
-    public void Run(in int data) => AspectChain.For(data)
-                                               .Run<EvaluationLogging>();
+    [Aspect<IEvaluationLogging>]
+    public partial void Run(in int data);
+}
+
+
+internal readonly partial struct EvaluationAspectChain
+{    
+    public partial void Run(in int data) => AspectChain.For(data)
+                                                       .Run(s => new EvaluationLogging(new EvaluationLoggingDependencies(s)));
 }

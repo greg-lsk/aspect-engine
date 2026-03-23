@@ -2,7 +2,8 @@
 
 internal readonly partial struct EvaluationLogging
 {
+    public int Context { get; }
     public EvaluationLoggingDependencies Dependencies { get; }
 
-    internal EvaluationLogging(Func<EvaluationLoggingDependencies> dependenciesFactory) => Dependencies = dependenciesFactory();
+    internal EvaluationLogging(EvaluationLoggingDependencies dependencies) => Dependencies = dependencies;
 }

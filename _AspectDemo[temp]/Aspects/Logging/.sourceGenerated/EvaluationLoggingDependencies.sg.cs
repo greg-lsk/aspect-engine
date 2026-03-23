@@ -8,7 +8,7 @@ internal readonly struct EvaluationLoggingDependencies : IEvaluationLoggingDepen
 {
     private readonly IServiceProvider _serviceProvider;
 
-    private EvaluationLoggingDependencies(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
+    internal EvaluationLoggingDependencies(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
     public Microsoft.Extensions.Logging.ILogger Logger => _serviceProvider.GetRequiredService<Microsoft.Extensions.Logging.ILogger>();
 }

@@ -7,13 +7,16 @@ using AspectEngine.DependencyInjection;
 namespace AspectDemo.Aspects.Logging;
 
 [Injectee]
-internal readonly partial struct EvaluationLogging : IAspect<int>,
+internal readonly partial struct EvaluationLogging : IEvaluationLogging,
+                                                     IAspectOn<int>,
                                                      IInjectWith<EvaluationLoggingDependencies>
 {
-    public void Run(in int data)
+    public void Run()
     {
         var logger = Dependencies.Logger;
 
-        logger.LogInformation("Evaluated: {data}", data);
+        logger.LogInformation("Evaluated: {data}", Context);
     }
 }
+
+internal interface IEvaluationLogging : IAspectMetadata { }
