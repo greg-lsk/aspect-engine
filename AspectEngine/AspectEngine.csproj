@@ -9,4 +9,8 @@
     <Compile Include=".config\GlobalSuppressions.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="src\.Internals\" />
+  </ItemGroup>
+
 </Project>
