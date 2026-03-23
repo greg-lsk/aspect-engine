@@ -1,4 +1,5 @@
 ﻿using AspectEngine.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace AspectDemo.Aspects.Logging;
@@ -9,6 +10,5 @@ internal readonly struct EvaluationLoggingDependencies : IInjectableMetadata
 
     private EvaluationLoggingDependencies(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
-    public Microsoft.Extensions.Logging.ILogger Logger 
-        => (Microsoft.Extensions.Logging.ILogger) _serviceProvider.GetService(typeof(Microsoft.Extensions.Logging.ILogger));
+    public Microsoft.Extensions.Logging.ILogger Logger => _serviceProvider.GetRequiredService<Microsoft.Extensions.Logging.ILogger>();
 }
