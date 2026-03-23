@@ -9,6 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Aspects\Logging\.sourceGenerated\EvaluationLoggingDependencies.sg.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AspectEngine\AspectEngine.csproj" />
   </ItemGroup>
 
