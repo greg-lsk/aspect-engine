@@ -3,5 +3,5 @@
 
 namespace AspectEngine.DependencyInjection;
 
-[AttributeUsage(AttributeTargets.Struct | AttributeTargets.Class, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
 public class InjectableAttribute : Attribute { }
