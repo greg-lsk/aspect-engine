@@ -1,27 +1,19 @@
-﻿using System;
-
-
-namespace AspectEngine;
+﻿namespace AspectEngine;
 
 public readonly struct AspectExecutionEnvironment<TData>
 {
     private readonly TData _data;
-    private readonly IServiceProvider _serviceProvider;
 
 
-    internal static AspectExecutionEnvironment<TData> Create(TData data, IServiceProvider serviceProvider) => new(data, serviceProvider);
-    private AspectExecutionEnvironment(TData data, IServiceProvider serviceProvider)
+    internal static AspectExecutionEnvironment<TData> Create(TData data) => new(data);
+    private AspectExecutionEnvironment(TData data)
     {
         _data = data;
-        _serviceProvider = serviceProvider;
     }
 
 
-    public AspectExecutionEnvironment<TData> Run<TAspect>(Func<IServiceProvider, TAspect> aspect) 
-        where TAspect : struct, IAspectMetadata
+    public void Run<TAspect>(TAspect aspect) where TAspect : struct, IAspect
     {
-        aspect(_serviceProvider).Run();
-
-        return this;
+        aspect.Run();
     }
 }

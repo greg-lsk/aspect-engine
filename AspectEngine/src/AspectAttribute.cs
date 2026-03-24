@@ -3,5 +3,5 @@
 
 namespace AspectEngine;
 
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-public sealed class AspectAttribute<TAspect> : Attribute where TAspect : IAspectMetadata { }
+[AttributeUsage(AttributeTargets.Struct | AttributeTargets.Class, AllowMultiple = false)]
+public class AspectAttribute<TAspect> : Attribute where TAspect : IAspect { } 
