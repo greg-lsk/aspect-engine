@@ -4,7 +4,7 @@ using AspectEngine.DependencyInjection;
 
 namespace AspectDemo.Aspects.Logging;
 
-[Injectable]
+[DependenciesContract]
 public interface IEvaluationLoggingDependencies
 {
     public ILogger Logger { get; }

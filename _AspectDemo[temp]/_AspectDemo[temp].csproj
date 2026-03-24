@@ -9,7 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Aspects\Logging\.sourceGenerated\EvaluationLogging.cs" />
+    <Compile Include="Aspects\Chains\.sourceGenerated\EvaluationAspectChain.sg.cs" />
+    <Compile Include="Aspects\Logging\.sourceGenerated\EvaluationLogging.sg.cs" />
     <Compile Include="Aspects\Logging\.sourceGenerated\EvaluationLoggingDependencies.sg.cs" />
   </ItemGroup>
 

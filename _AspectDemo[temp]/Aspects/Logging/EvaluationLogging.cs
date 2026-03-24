@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
-
-using AspectEngine;
+﻿using AspectEngine;
 using AspectEngine.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 
 namespace AspectDemo.Aspects.Logging;
 
-[Injectee]
+[Aspect<IEvaluationLogging>]
 internal readonly partial struct EvaluationLogging : IEvaluationLogging,
                                                      IAspectOn<int>,
                                                      IInjectWith<EvaluationLoggingDependencies>
@@ -19,4 +18,4 @@ internal readonly partial struct EvaluationLogging : IEvaluationLogging,
     }
 }
 
-internal interface IEvaluationLogging : IAspectMetadata { }
+internal interface IEvaluationLogging : IAspect { }
