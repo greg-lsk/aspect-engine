@@ -8,7 +8,7 @@ namespace AspectDemo.Aspects.Logging;
 [Aspect<IEvaluationLogging>]
 internal readonly partial struct EvaluationLogging : IEvaluationLogging,
                                                      IAspectOn<int>,
-                                                     IInjectWith<EvaluationLoggingDependencies>
+                                                     IInjectWith<IEvaluationLoggingDependencies>
 {
     public void Run()
     {

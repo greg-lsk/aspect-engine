@@ -4,7 +4,7 @@ using AspectEngine.DependencyInjection;
 
 namespace AspectDemo.Aspects.Logging;
 
-internal readonly struct EvaluationLoggingDependencies : IEvaluationLoggingDependencies, IInjectableMetadata
+internal readonly struct EvaluationLoggingDependencies : IEvaluationLoggingDependencies
 {
     private readonly AspectHandler _aspectHandler;
 

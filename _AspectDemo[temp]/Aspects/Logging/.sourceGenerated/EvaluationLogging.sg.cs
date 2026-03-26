@@ -3,7 +3,7 @@
 internal readonly partial struct EvaluationLogging
 {
     public int Context { get; }
-    public AspectDemo.Aspects.Logging.EvaluationLoggingDependencies Dependencies { get; }
+    public AspectDemo.Aspects.Logging.IEvaluationLoggingDependencies Dependencies { get; }
 
     internal EvaluationLogging(int context, AspectDemo.Aspects.Logging.EvaluationLoggingDependencies dependencies)
     {
