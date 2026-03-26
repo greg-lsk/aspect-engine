@@ -4,4 +4,4 @@
 namespace AspectEngine.DependencyInjection;
 
 [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-public class DependenciesContractAttribute : Attribute { }
+public class ServicesContractAttribute : Attribute { }

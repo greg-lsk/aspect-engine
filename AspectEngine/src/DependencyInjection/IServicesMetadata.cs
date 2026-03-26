@@ -1,3 +1,3 @@
 ﻿namespace AspectEngine.DependencyInjection;
 
-public interface IInjectableMetadata { }
+public interface IServicesMetadata { }
