@@ -1,14 +1,10 @@
-﻿using AspectEngine;
-using AspectEngine.DependencyInjection;
-
-
-namespace AspectDemo.Aspects.Logging;
+﻿namespace AspectDemo.Aspects.Logging;
 
 internal readonly struct EvaluationLoggingDependencies : IEvaluationLoggingDependencies
 {
-    private readonly AspectHandler _aspectHandler;
+    private readonly AspectEngine.DependencyInjection.Resolution _resolution;
 
-    internal EvaluationLoggingDependencies(AspectHandler aspectHandler) => _aspectHandler = aspectHandler;
+    internal EvaluationLoggingDependencies(AspectEngine.DependencyInjection.Resolution resolution) => _resolution = resolution;
 
-    public Microsoft.Extensions.Logging.ILogger Logger => _aspectHandler.ResolveDependency<Microsoft.Extensions.Logging.ILogger>();
+    public Microsoft.Extensions.Logging.ILogger Logger => _resolution.For<Microsoft.Extensions.Logging.ILogger>();
 }

@@ -4,8 +4,8 @@ using AspectEngine.DependencyInjection;
 
 namespace AspectDemo.Aspects.Logging;
 
-[DependenciesContract]
-public interface IEvaluationLoggingDependencies : IInjectableMetadata
+[ServicesContract]
+public interface IEvaluationLoggingDependencies : IServicesMetadata
 {
     public ILogger Logger { get; }
 }
