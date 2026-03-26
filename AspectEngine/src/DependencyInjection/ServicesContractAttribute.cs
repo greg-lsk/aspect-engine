@@ -3,5 +3,5 @@
 
 namespace AspectEngine.DependencyInjection;
 
-[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Struct | AttributeTargets.Class, AllowMultiple = false)]
 public class ServicesContractAttribute : Attribute { }
