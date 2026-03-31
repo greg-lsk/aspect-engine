@@ -6,9 +6,7 @@ using Microsoft.Extensions.Logging;
 namespace AspectDemo.Aspects.Logging;
 
 [Aspect<IEvaluationLogging>]
-internal readonly partial struct EvaluationLogging : IEvaluationLogging,
-                                                     IWithContext<int>,
-                                                     IWithServices<IEvaluationLoggingDependencies>
+internal readonly partial struct EvaluationLogging : IEvaluationLogging, IEvaluationLoggingTemplate
 {
     public void Run()
     {
@@ -19,3 +17,4 @@ internal readonly partial struct EvaluationLogging : IEvaluationLogging,
 }
 
 internal interface IEvaluationLogging : IAspect { }
+internal interface IEvaluationLoggingTemplate : IWithContext<int>, IWithServices<IEvaluationLoggingDependencies> { }
