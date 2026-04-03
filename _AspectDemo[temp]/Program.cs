@@ -8,7 +8,7 @@ var services = new ServiceCollection();
 services.AddSingleton<IEvaluationLoggingFactory, EvaluationLoggingFactory>(provider =>
 {
     IServiceProvider providerSource() => provider;
-    ILogger loggerResolution(ProviderSource ps) => ps().GetRequiredService<ILogger>();
+    ILogger loggerResolution(SupplyProvider ps) => ps().GetRequiredService<ILogger>();
 
     return new(provider.CreateScope, providerSource, loggerResolution);
 });

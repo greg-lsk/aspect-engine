@@ -15,32 +15,27 @@ internal readonly partial struct EvaluationLogging : IAspect<int>
     }
 }
 
-internal interface IEvaluationLoggingFactory : IProxiedResolution<int, EvaluationLogging>;
+internal interface IEvaluationLoggingFactory : IProxiedResolution<EvaluationLogging>;
 internal partial class EvaluationLoggingFactory : IEvaluationLoggingFactory { }
 
 
-internal partial class EvaluationLoggingFactory : ProxiedResolutionBase
+internal partial class EvaluationLoggingFactory : ProxiedResolutionBase<EvaluationLogging>
 {
-    private readonly Func<ProviderSource, ILogger> _loggerResolution;
+    private readonly Resolve<ILogger> _loggerResolution;
+    protected override Resolve<EvaluationLogging> Resolve { get; }
 
-    internal EvaluationLoggingFactory(ScopeFactory scopeFactory,
-                                      ProviderSource providerSource,
-                                      Func<ProviderSource, ILogger> loggerResolution) : base(scopeFactory, providerSource)
+
+    internal EvaluationLoggingFactory(CreateScope createScope,
+                                      SupplyProvider supplyProvider,
+                                      Resolve<ILogger> loggerResolution) : base(createScope, supplyProvider)
     {
         _loggerResolution = loggerResolution;
-    }
-    
-    public EvaluationLogging Create()
-    {
-        return new(_loggerResolution(_providerSource));
+
+        Resolve = sp =>
+        {
+            return new(_loggerResolution(sp));
+        };
     }
 
-    public Wrap<int, EvaluationLogging, IProxiedResolution<int, EvaluationLogging>> AsScoped()
-    {
-        var scope = _scopeFactory();
-
-        var factory = new EvaluationLoggingFactory(_scopeFactory, () => _scopeFactory().ServiceProvider, _loggerResolution);
-
-        return new(scope, factory);
-    }
+    public override EvaluationLogging Create() => Resolve(SupplyProvider);
 }
