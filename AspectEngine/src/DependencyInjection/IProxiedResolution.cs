@@ -4,57 +4,57 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AspectEngine.DependencyInjection;
 
-
 public interface IProxiedResolution<TResolved>
 {
     public TResolved Create();
-}
-
-public interface IProxiedResolution<TContext, TResolved>
-{
-    public TResolved Create();
-    
-    public Wrap<TContext, TResolved, IProxiedResolution<TContext, TResolved>> AsScoped(); 
-
+    public Wrap<TResolved> AsScoped();
 }
 
 
-public delegate IServiceScope ScopeFactory();
-public delegate IServiceProvider ProviderSource();
-public abstract class ProxiedResolutionBase
-{
-    protected readonly ScopeFactory _scopeFactory;
-    protected readonly ProviderSource _providerSource;
+public delegate IServiceScope CreateScope();
+public delegate IServiceProvider SupplyProvider();
+public delegate TResolved Resolve<TResolved>(SupplyProvider supplyProvider);
 
-    protected ProxiedResolutionBase(ScopeFactory scopeFactory, ProviderSource providerSource)
+public abstract class ProxiedResolutionBase<TResolved>
+{
+    protected CreateScope CreateScope { get; }
+    protected SupplyProvider SupplyProvider { get; }
+    protected abstract Resolve<TResolved> Resolve { get; }
+
+
+    protected ProxiedResolutionBase(CreateScope createScope, SupplyProvider supplyProvider)
     {
-        _scopeFactory = scopeFactory;
-        _providerSource = providerSource;
+        CreateScope = createScope;
+        SupplyProvider = supplyProvider;
     }
+
+
+    public abstract TResolved Create();
+    public Wrap<TResolved> AsScoped() => Wrap<TResolved>.Instance(CreateScope, Resolve);
 }
 
 
-public class Wrap<TContext, TResolved, TFactory> : IDisposable, IProxiedResolution<TContext, TResolved>
-      where TFactory : IProxiedResolution<TContext, TResolved>
+public readonly struct Wrap<TResolved> : IDisposable
 {
     private readonly IServiceScope _scope;
-    private readonly TFactory _factory;
+    private readonly SupplyProvider _supplyProvider;
+    private readonly Resolve<TResolved> _resolve;
 
-    public Wrap(IServiceScope scope, TFactory factory)
+
+    private Wrap(CreateScope createScope, Resolve<TResolved> resolve)
     {
+        var scope = createScope();
+
         _scope = scope;
-        _factory = factory;
+        _supplyProvider = () => scope.ServiceProvider;
+        _resolve = resolve;
     }
-
-    public Wrap<TContext, TResolved, IProxiedResolution<TContext, TResolved>> AsScoped()
+    internal static Wrap<TResolved> Instance(CreateScope createScope, Resolve<TResolved> resolve)
     {
-        return _factory.AsScoped();
+        return new(createScope, resolve);
     }
 
-    public TResolved Create() => _factory.Create();
 
-    public void Dispose()
-    {
-        _scope.Dispose();
-    }
+    public TResolved Create() => _resolve(_supplyProvider);
+    public void Dispose() => _scope.Dispose();
 }
