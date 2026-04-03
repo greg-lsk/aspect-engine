@@ -5,24 +5,17 @@ using Microsoft.Extensions.Logging;
 
 namespace AspectDemo.Aspects.Logging;
 
-[Aspect<IEvaluationLogging>]
-internal readonly partial struct EvaluationLogging : IEvaluationLogging
+internal readonly partial struct EvaluationLogging : IAspect<int>
 {
     private readonly ILogger _logger;
 
-    [Context]
-    private readonly int _context;
-
-    public void Run()
+    public void Run(in int context)
     {
-        _logger.LogInformation("Evaluated: {data}", _context);
+        _logger.LogInformation("Evaluated: {context}", context);
     }
 }
 
-internal interface IEvaluationLogging : IAspect { }
-
-
-internal interface IEvaluationLoggingFactory : IServiceFactory<int, EvaluationLogging>;
+internal interface IEvaluationLoggingFactory : IProxiedResolution<int, EvaluationLogging>;
 internal class EvaluationLoggingFactory : IEvaluationLoggingFactory
 {
     private readonly Func<ILogger> _loggerResolution;
@@ -34,6 +27,6 @@ internal class EvaluationLoggingFactory : IEvaluationLoggingFactory
 
     public EvaluationLogging Create(in int context)
     {
-        return new(context, _loggerResolution());
+        return new(_loggerResolution());
     }
 }
