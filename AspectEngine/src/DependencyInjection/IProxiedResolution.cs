@@ -4,22 +4,22 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AspectEngine.DependencyInjection;
 
-public interface IProxiedResolution<TResolved>
+public interface IProxiedResolution<T>
 {
-    public TResolved Create();
-    public Wrap<TResolved> AsScoped();
+    public T Resolve();
+    public Wrap<T> AsScoped();
 }
 
 
 public delegate IServiceScope CreateScope();
 public delegate IServiceProvider SupplyProvider();
-public delegate TResolved Resolve<TResolved>(SupplyProvider supplyProvider);
+public delegate T Resolve<T>(SupplyProvider supplyProvider);
 
-public abstract class ProxiedResolutionBase<TResolved>
+public abstract class ProxiedResolutionBase<T>
 {
     protected CreateScope CreateScope { get; }
     protected SupplyProvider SupplyProvider { get; }
-    protected abstract Resolve<TResolved> Resolve { get; }
+    protected abstract Resolve<T> Resolution { get; }
 
 
     protected ProxiedResolutionBase(CreateScope createScope, SupplyProvider supplyProvider)
@@ -29,19 +29,19 @@ public abstract class ProxiedResolutionBase<TResolved>
     }
 
 
-    public abstract TResolved Create();
-    public Wrap<TResolved> AsScoped() => Wrap<TResolved>.Instance(CreateScope, Resolve);
+    public abstract T Resolve();
+    public Wrap<T> AsScoped() => Wrap<T>.Instance(CreateScope, Resolution);
 }
 
 
-public readonly struct Wrap<TResolved> : IDisposable
+public readonly struct Wrap<T> : IDisposable
 {
     private readonly IServiceScope _scope;
     private readonly SupplyProvider _supplyProvider;
-    private readonly Resolve<TResolved> _resolve;
+    private readonly Resolve<T> _resolve;
 
 
-    private Wrap(CreateScope createScope, Resolve<TResolved> resolve)
+    private Wrap(CreateScope createScope, Resolve<T> resolve)
     {
         var scope = createScope();
 
@@ -49,12 +49,12 @@ public readonly struct Wrap<TResolved> : IDisposable
         _supplyProvider = () => scope.ServiceProvider;
         _resolve = resolve;
     }
-    internal static Wrap<TResolved> Instance(CreateScope createScope, Resolve<TResolved> resolve)
+    internal static Wrap<T> Instance(CreateScope createScope, Resolve<T> resolve)
     {
         return new(createScope, resolve);
     }
 
 
-    public TResolved Create() => _resolve(_supplyProvider);
+    public T Resolve() => _resolve(_supplyProvider);
     public void Dispose() => _scope.Dispose();
 }
