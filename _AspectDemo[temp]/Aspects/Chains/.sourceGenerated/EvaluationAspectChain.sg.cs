@@ -6,8 +6,8 @@ internal readonly partial struct EvaluationAspectChain
 
     public partial void Run(in int data)
     {
-        var executionEnvironment = _aspectHandler.CreateEnvironment(data);
+        //var executionEnvironment = _aspectHandler.CreateEnvironment(data);
 
-        executionEnvironment.Run(new AspectDemo.Aspects.Logging.EvaluationLogging(data, new AspectDemo.Aspects.Logging.EvaluationLoggingDependencies(_aspectHandler)));
+        //executionEnvironment.Run(new AspectDemo.Aspects.Logging.EvaluationLogging(data, new AspectDemo.Aspects.Logging.EvaluationLoggingDependencies(_aspectHandler)));
     }
 }

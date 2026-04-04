@@ -1,22 +1,44 @@
-﻿using AspectDemo.Aspects.Logging;
-using AspectEngine.DependencyInjection;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
-var services = new ServiceCollection();
+using AspectDemo;
+using AspectDemo.Aspects.Logging;
+using AspectEngine.ProxiedResolution;
 
-services.AddSingleton<IEvaluationLoggingFactory, EvaluationLoggingFactory>(provider =>
+var host = Host.CreateDefaultBuilder(args)
+               .ConfigureServices((context, services) =>
+               {
+                   services.AddScoped<IPseudoLog, PseudoLog>();
+
+                   services.AddSingleton<IEvaluationLoggingFactory, EvaluationLoggingFactory>(provider =>
+                   {
+                       IServiceProvider providerSource() => provider;
+                       IPseudoLog loggerResolution(SupplyProvider ps) => ps().GetRequiredService<IPseudoLog>();
+
+                       return new(provider.CreateScope, providerSource, loggerResolution);
+                   });
+               })
+               .Build();
+
+
+using (var scope = host.Services.CreateScope())
 {
-    IServiceProvider providerSource() => provider;
-    ILogger loggerResolution(SupplyProvider ps) => ps().GetRequiredService<ILogger>();
+    var i = 15;
+    var resolution = scope.ServiceProvider.GetRequiredService<IEvaluationLoggingFactory>();
+    
+    var aspect = resolution.Resolve();
+    aspect.Run(i++);
 
-    return new(provider.CreateScope, providerSource, loggerResolution);
-});
+    aspect = resolution.Resolve();
+    aspect.Run(i++);
+    aspect.Run(i++);
 
-var factory = services[0] as IEvaluationLoggingFactory;
+    using (var scopedResolution = resolution.AsScoped())
+    {
+        var aspect01 = scopedResolution.Resolve();
+        aspect01.Run(i++);
+    }
 
-using (var scopedFactory = factory!.AsScoped())
-{
-    var ev = scopedFactory.Create();
-    ev.Run(18);
+    //possible leak...
+    aspect.Run(i++);
 }

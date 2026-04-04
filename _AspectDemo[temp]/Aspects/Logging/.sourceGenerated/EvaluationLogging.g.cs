@@ -2,7 +2,7 @@
 
 internal readonly partial struct EvaluationLogging
 {
-    internal EvaluationLogging(Microsoft.Extensions.Logging.ILogger logger)
+    internal EvaluationLogging(AspectDemo.IPseudoLog logger)
     {
         this._logger = logger;
     }
