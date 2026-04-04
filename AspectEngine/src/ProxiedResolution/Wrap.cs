@@ -1,12 +1,10 @@
 ﻿using System;
-using Microsoft.Extensions.DependencyInjection;
 
 
 namespace AspectEngine.ProxiedResolution;
 
 public readonly struct Wrap<T> : IDisposable
 {
-    private readonly IServiceScope _scope;
     private readonly SupplyProvider _supplyProvider;
     private readonly Resolve<T> _resolve;
 
@@ -15,7 +13,6 @@ public readonly struct Wrap<T> : IDisposable
     {
         var scope = createScope();
 
-        _scope = scope;
         _supplyProvider = () => scope.ServiceProvider;
         _resolve = resolve;
     }
@@ -26,5 +23,5 @@ public readonly struct Wrap<T> : IDisposable
 
 
     public T Resolve() => _resolve(_supplyProvider);
-    public void Dispose() => _scope.Dispose();
+    public void Dispose() { }
 }
