@@ -6,9 +6,8 @@ internal partial class EvaluationLoggingFactory : AspectEngine.ProxiedResolution
 
 
     internal EvaluationLoggingFactory(
-        AspectEngine.ProxiedResolution.CreateScope createScope,
         AspectEngine.ProxiedResolution.SupplyProvider supplyProvider,
-        AspectEngine.ProxiedResolution.Resolve<AspectDemo.IPseudoLog> loggerResolution) : base(createScope, supplyProvider)
+        AspectEngine.ProxiedResolution.Resolve<AspectDemo.IPseudoLog> loggerResolution) : base(supplyProvider)
     {
         Resolution = sp =>
         {

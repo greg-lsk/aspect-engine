@@ -15,7 +15,7 @@ var host = Host.CreateDefaultBuilder(args)
                        IServiceProvider providerSource() => provider;
                        IPseudoLog loggerResolution(SupplyProvider ps) => ps().GetRequiredService<IPseudoLog>();
 
-                       return new(provider.CreateScope, providerSource, loggerResolution);
+                       return new(providerSource, loggerResolution);
                    });
                })
                .Build();
@@ -24,7 +24,8 @@ var host = Host.CreateDefaultBuilder(args)
 using (var scope = host.Services.CreateScope())
 {
     var i = 15;
-    var resolution = scope.ServiceProvider.GetRequiredService<IEvaluationLoggingFactory>();
+    var scopedProvider = scope.ServiceProvider;
+    var resolution = scopedProvider.GetRequiredService<IEvaluationLoggingFactory>();
     
     var aspect = resolution.Resolve();
     aspect.Run(i++);
@@ -33,10 +34,11 @@ using (var scope = host.Services.CreateScope())
     aspect.Run(i++);
     aspect.Run(i++);
 
-    using (var scopedResolution = resolution.AsScoped())
+    using (var subScope = scopedProvider.CreateScope())
+    using (var scopedResolution = resolution.AsScoped(() => subScope))
     {
-        var aspect01 = scopedResolution.Resolve();
-        aspect01.Run(i++);
+        aspect = scopedResolution.Resolve();
+        aspect.Run(i++);
     }
 
     //possible leak...
