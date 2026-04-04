@@ -1,17 +1,12 @@
 ﻿namespace AspectEngine.ProxiedResolution;
 
-public abstract class ProxiedResolutionBase<T>
+public abstract class ProxiedResolutionBase<T> where T : struct
 {
-    protected SupplyProvider SupplyProvider { get; }
-    protected abstract Resolve<T> Resolution { get; }
+    public SupplyProvider SupplyRootProvider { get; }
 
 
     protected ProxiedResolutionBase(SupplyProvider supplyProvider)
     {
-        SupplyProvider = supplyProvider;
+        SupplyRootProvider = supplyProvider;
     }
-
-
-    public abstract T Resolve();
-    public Wrap<T> AdjustTo(SupplyScope supplyScope) => Wrap<T>.Instance(supplyScope, Resolution);
 }

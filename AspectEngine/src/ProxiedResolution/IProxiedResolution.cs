@@ -1,7 +1,6 @@
 ﻿namespace AspectEngine.ProxiedResolution;
 
-public interface IProxiedResolution<T>
+public interface IProxiedResolution<T> where T : struct
 {
-    public T Resolve();
-    public Wrap<T> AdjustTo(SupplyScope supplyScope);
+    public ResolvedHost<T> CreateHost(SupplyScope? supplyScope = null);
 }
