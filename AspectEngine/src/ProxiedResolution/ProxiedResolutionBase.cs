@@ -13,5 +13,5 @@ public abstract class ProxiedResolutionBase<T>
 
 
     public abstract T Resolve();
-    public Wrap<T> AsScoped(CreateScope createScope) => Wrap<T>.Instance(createScope, Resolution);
+    public Wrap<T> AdjustTo(SupplyScope supplyScope) => Wrap<T>.Instance(supplyScope, Resolution);
 }

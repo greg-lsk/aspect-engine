@@ -9,16 +9,16 @@ public readonly struct Wrap<T> : IDisposable
     private readonly Resolve<T> _resolve;
 
 
-    private Wrap(CreateScope createScope, Resolve<T> resolve)
+    private Wrap(SupplyScope supplyScope, Resolve<T> resolve)
     {
-        var scope = createScope();
+        var scope = supplyScope();
 
         _supplyProvider = () => scope.ServiceProvider;
         _resolve = resolve;
     }
-    internal static Wrap<T> Instance(CreateScope createScope, Resolve<T> resolve)
+    internal static Wrap<T> Instance(SupplyScope supplyScope, Resolve<T> resolve)
     {
-        return new(createScope, resolve);
+        return new(supplyScope, resolve);
     }
 
 
