@@ -3,5 +3,5 @@
 public interface IProxiedResolution<T>
 {
     public T Resolve();
-    public Wrap<T> AsScoped(CreateScope createScope);
+    public Wrap<T> AsScoped();
 }

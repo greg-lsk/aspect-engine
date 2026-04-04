@@ -2,16 +2,18 @@
 
 public abstract class ProxiedResolutionBase<T>
 {
+    protected CreateScope CreateScope { get; }
     protected SupplyProvider SupplyProvider { get; }
     protected abstract Resolve<T> Resolution { get; }
 
 
-    protected ProxiedResolutionBase(SupplyProvider supplyProvider)
+    protected ProxiedResolutionBase(CreateScope createScope, SupplyProvider supplyProvider)
     {
+        CreateScope = createScope;
         SupplyProvider = supplyProvider;
     }
 
 
     public abstract T Resolve();
-    public Wrap<T> AsScoped(CreateScope createScope) => Wrap<T>.Instance(createScope, Resolution);
+    public Wrap<T> AsScoped() => Wrap<T>.Instance(CreateScope, Resolution);
 }
