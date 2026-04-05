@@ -1,8 +1,8 @@
 ﻿namespace AspectEngine.ProxiedResolution;
 
-public abstract class ProxiedResolutionBase<T> where T : struct
+public abstract class ProxiedResolutionBase
 {
-    public SupplyProvider SupplyRootProvider { get; }
+    protected SupplyProvider SupplyRootProvider { get; }
 
 
     protected ProxiedResolutionBase(SupplyProvider supplyProvider)
