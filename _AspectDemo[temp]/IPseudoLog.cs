@@ -19,7 +19,7 @@ internal class PseudoLog : IPseudoLog
 
     private void ThrowIfDisposed()
     {
-        if (_disposed) throw new ObjectDisposedException(GetType().FullName);
+        ObjectDisposedException.ThrowIf(_disposed, this);
     }
 
     protected virtual void Dispose(bool disposing)

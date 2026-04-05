@@ -1,14 +1,16 @@
 ﻿using AspectEngine;
+using AspectEngine.ProxiedResolution;
+
 
 namespace AspectDemo.Aspects.Logging;
 
-
+[ResolveUsing<IResolutionMetadata<EvaluationLogging>>]
 internal readonly partial struct EvaluationLogging : IAspect<int>
 {
-    private readonly IPseudoLog _logger;
+    private partial IPseudoLog Logger { get; }
 
     public void Run(in int context)
     {
-        _logger.Log($"Evaluated: {context}");
+        Logger.Log($"Evaluated: {context}");
     }
 }

@@ -1,21 +1,27 @@
-﻿namespace AspectDemo.Aspects.Logging;
+﻿using AspectEngine.ProxiedResolution;
 
-internal partial class EvaluationLoggingFactory : AspectEngine.ProxiedResolution.ProxiedResolutionBase<EvaluationLogging>
+
+namespace AspectDemo.Aspects.Logging;
+
+#nullable enable annotations
+internal class EvaluationLoggingResolution : 
+    AspectEngine.ProxiedResolution.ProxiedResolutionBase,
+    AspectEngine.ProxiedResolution.IResolutionMetadata<EvaluationLogging>
 {
-    protected override AspectEngine.ProxiedResolution.Resolve<EvaluationLogging> Resolution { get; }
+    internal AspectEngine.ProxiedResolution.Resolve<AspectDemo.IPseudoLog> LoggerResolution { get; }
 
 
-    internal EvaluationLoggingFactory(
-        AspectEngine.ProxiedResolution.CreateScope createScope,
+    internal EvaluationLoggingResolution(
         AspectEngine.ProxiedResolution.SupplyProvider supplyProvider,
-        AspectEngine.ProxiedResolution.Resolve<AspectDemo.IPseudoLog> loggerResolution) : base(createScope, supplyProvider)
+        AspectEngine.ProxiedResolution.Resolve<AspectDemo.IPseudoLog> loggerResolution) : base(supplyProvider)
     {
-        Resolution = sp =>
-        {
-            return new(loggerResolution(sp));
-        };
+        LoggerResolution = loggerResolution;
     }
 
 
-    public override EvaluationLogging Resolve() => Resolution(SupplyProvider);
+    public SessionOn<EvaluationLogging> CreateSession(SupplyScope? supplyScope = null)
+    {
+        var a = new EvaluationLogging(this, supplyScope is null ? SupplyRootProvider : () => supplyScope().ServiceProvider);
+        return SessionOn<EvaluationLogging>.Create(in a);
+    }
 }

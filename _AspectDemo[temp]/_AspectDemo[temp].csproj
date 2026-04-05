@@ -5,6 +5,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>AspectDemo</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
+	<LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

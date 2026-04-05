@@ -1,44 +1,43 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-
-using AspectDemo;
+﻿using AspectDemo;
 using AspectDemo.Aspects.Logging;
 using AspectEngine.ProxiedResolution;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+
 
 var host = Host.CreateDefaultBuilder(args)
                .ConfigureServices((context, services) =>
                {
                    services.AddScoped<IPseudoLog, PseudoLog>();
 
-                   services.AddSingleton<IEvaluationLoggingFactory, EvaluationLoggingFactory>(provider =>
+                   services.AddSingleton<IResolutionMetadata<EvaluationLogging>, EvaluationLoggingResolution>(provider =>
                    {
                        IServiceProvider providerSource() => provider;
                        IPseudoLog loggerResolution(SupplyProvider ps) => ps().GetRequiredService<IPseudoLog>();
 
-                       return new(provider.CreateScope, providerSource, loggerResolution);
+                       return new(providerSource, loggerResolution);
                    });
                })
                .Build();
 
+var resolution = host.Services.GetRequiredService<IResolutionMetadata<EvaluationLogging>>();
 
 using (var scope = host.Services.CreateScope())
+using (var aspectSession = resolution.CreateSession(() => scope))
 {
     var i = 15;
-    var resolution = scope.ServiceProvider.GetRequiredService<IEvaluationLoggingFactory>();
+    static void runAspect(in EvaluationLogging evaluationLogging, int number) => evaluationLogging.Run(number);
     
-    var aspect = resolution.Resolve();
-    aspect.Run(i++);
+    aspectSession.Execute(runAspect, i++);
+    aspectSession.Execute(runAspect, i++);
+    aspectSession.Execute(runAspect, i++);
 
-    aspect = resolution.Resolve();
-    aspect.Run(i++);
-    aspect.Run(i++);
-
-    using (var scopedResolution = resolution.AsScoped())
+    using (var subScope = scope.ServiceProvider.CreateScope())
+    using (var subScopedHost = resolution.CreateSession(() => subScope))
     {
-        var aspect01 = scopedResolution.Resolve();
-        aspect01.Run(i++);
+        aspectSession.Execute(runAspect, i++);
+        subScopedHost.Execute(runAspect, i++);
     }
-
-    //possible leak...
-    aspect.Run(i++);
+   
+    aspectSession.Execute(runAspect, i++);
 }
