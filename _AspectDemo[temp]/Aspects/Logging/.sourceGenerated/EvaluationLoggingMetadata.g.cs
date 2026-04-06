@@ -1,6 +1,8 @@
 ﻿namespace AspectDemo.Aspects.Logging;
 
-internal class EvaluationLoggingMetadata : AspectEngine.ProxiedResolution.IResolutionMetadata<EvaluationLogging>
+internal class EvaluationLoggingMetadata : 
+    AspectEngine.ProxiedResolution.IResolutionMetadata<EvaluationLogging>,
+    AspectEngine.ProxiedResolution.ICreator<EvaluationLogging>
 {
     internal AspectEngine.ProxiedResolution.Resolution LoggerResolution { get; }
 
@@ -11,7 +13,7 @@ internal class EvaluationLoggingMetadata : AspectEngine.ProxiedResolution.IResol
     }
 
 
-    public EvaluationLogging Create(in AspectEngine.ProxiedResolution.IResolutionContext<EvaluationLogging> resolutionContext)
+    EvaluationLogging AspectEngine.ProxiedResolution.ICreator<EvaluationLogging>.Create(in AspectEngine.ProxiedResolution.IResolutionContext<EvaluationLogging> resolutionContext)
     {
         return new(resolutionContext);
     }
