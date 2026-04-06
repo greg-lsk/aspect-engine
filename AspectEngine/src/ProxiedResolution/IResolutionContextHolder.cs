@@ -1,6 +1,8 @@
 ﻿namespace AspectEngine.ProxiedResolution;
 
-public interface IResolutionContextHolder<T> where T : struct
+public interface IResolutionContextHolder<T, TContext> 
+    where T : struct
+    where TContext : struct, IResolutionContext<T>
 {
-    public IResolutionContext<T> ResolutionContext { get; }
+    public TContext ResolutionContext { get; }
 }

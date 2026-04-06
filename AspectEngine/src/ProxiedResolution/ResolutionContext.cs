@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace AspectEngine.ProxiedResolution;
 
-
-namespace AspectEngine.ProxiedResolution;
-
-public class ResolutionContext<T> : IResolutionContext<T> where T : struct
+public readonly struct ResolutionContext<T> : IResolutionContext<T> where T : struct
 {
     private readonly object _resolutionProvider;
     private readonly IResolutionMetadata<T> _resolutionMetadata;
@@ -11,10 +8,14 @@ public class ResolutionContext<T> : IResolutionContext<T> where T : struct
     public IResolutionMetadata<T> ResolutionMetadata => _resolutionMetadata;
 
 
-    public ResolutionContext(object resolutionProvider, IResolutionMetadata<T> resolutionMetadata)
+    private ResolutionContext(object resolutionProvider, IResolutionMetadata<T> resolutionMetadata)
     {
         _resolutionProvider = resolutionProvider;
         _resolutionMetadata = resolutionMetadata;
+    }
+    public static ResolutionContext<T> Create(object resolutionProvider, IResolutionMetadata<T> resolutionMetadata)
+    {
+        return new(resolutionProvider, resolutionMetadata);
     }
 
 
