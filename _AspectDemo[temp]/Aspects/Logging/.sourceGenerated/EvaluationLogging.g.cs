@@ -1,8 +1,7 @@
 ﻿namespace AspectDemo.Aspects.Logging;
 
-internal readonly partial struct EvaluationLogging :
-    System.IDisposable,
-    AspectEngine.ProxiedResolution.IResolutionContextHolder<EvaluationLogging>
+internal readonly partial struct EvaluationLogging 
+    : AspectEngine.ProxiedResolution.IResolutionContextHolder<EvaluationLogging>
 {
     private readonly AspectEngine.ProxiedResolution.IResolutionContext<EvaluationLogging> _aspectContext;
     AspectEngine.ProxiedResolution.IResolutionContext<EvaluationLogging> AspectEngine.ProxiedResolution.IResolutionContextHolder<EvaluationLogging>.ResolutionContext
@@ -13,10 +12,5 @@ internal readonly partial struct EvaluationLogging :
     internal EvaluationLogging(AspectEngine.ProxiedResolution.IResolutionContext<EvaluationLogging> aspectContext)
     {
         _aspectContext = aspectContext;
-    }
-
-    public void Dispose()
-    {
-
     }
 }

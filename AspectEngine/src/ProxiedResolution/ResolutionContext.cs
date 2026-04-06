@@ -1,4 +1,7 @@
-﻿namespace AspectEngine.ProxiedResolution;
+﻿using System;
+
+
+namespace AspectEngine.ProxiedResolution;
 
 public class ResolutionContext<T> : IResolutionContext<T> where T : struct
 {
