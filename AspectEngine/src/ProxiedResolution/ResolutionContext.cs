@@ -13,9 +13,13 @@ public readonly struct ResolutionContext<T> : IResolutionContext<T> where T : st
         _resolutionProvider = resolutionProvider;
         _resolutionMetadata = resolutionMetadata;
     }
-    public static ResolutionContext<T> Create(object resolutionProvider, IResolutionMetadata<T> resolutionMetadata)
+    public static ResolutionContext<T> Create(object? resolutionProvider, ResolutionMetadata<T> resolutionMetadata)
     {
-        return new(resolutionProvider, resolutionMetadata);
+        var resolutionSource = resolutionProvider is not null 
+            ? resolutionProvider 
+            : resolutionMetadata.HostingContainer;
+
+        return new(resolutionSource, resolutionMetadata);
     }
 
 
