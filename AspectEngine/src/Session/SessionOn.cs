@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace AspectEngine.ProxiedResolution;
+namespace AspectEngine.Session;
 
 public delegate void SessionCallback<THosted>(in THosted hosted);
 public delegate void SessionCallback<THosted, T>(in THosted hosted, T arg);
