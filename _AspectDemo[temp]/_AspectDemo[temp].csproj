@@ -12,7 +12,7 @@
   <ItemGroup>
     <Compile Include="Aspects\Chains\.sourceGenerated\EvaluationAspectChain.sg.cs" />
     <Compile Include="Aspects\Logging\.sourceGenerated\EvaluationLogging.g.cs" />
-    <Compile Include="Aspects\Logging\.sourceGenerated\EvaluationLoggingResolution.g.cs" />
+    <Compile Include="Aspects\Logging\.sourceGenerated\EvaluationLoggingMetadata.g.cs" />
   </ItemGroup>
 
   <ItemGroup>

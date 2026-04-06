@@ -1,6 +1,7 @@
 ﻿using AspectDemo;
 using AspectDemo.Aspects.Logging;
 using AspectEngine.ProxiedResolution;
+using AspectEngine.ProxiedResolution.IResolutionContextExtensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,24 +11,24 @@ var host = Host.CreateDefaultBuilder(args)
                {
                    services.AddScoped<IPseudoLog, PseudoLog>();
 
-                   services.AddSingleton<IResolutionMetadata<EvaluationLogging>, EvaluationLoggingResolution>(provider =>
+                   services.AddSingleton<IResolutionMetadata<EvaluationLogging>, EvaluationLoggingMetadata>(provider =>
                    {
-                       IServiceProvider providerSource() => provider;
-                       IPseudoLog loggerResolution(SupplyProvider ps) => ps().GetRequiredService<IPseudoLog>();
+                       static object loggerResolution(object serviceProvider) => (serviceProvider as IServiceProvider).GetRequiredService<IPseudoLog>();
 
-                       return new(providerSource, loggerResolution);
+                       return new(loggerResolution);
                    });
                })
                .Build();
 
+
 var resolution = host.Services.GetRequiredService<IResolutionMetadata<EvaluationLogging>>();
 
 using (var scope = host.Services.CreateScope())
-using (var aspectSession = resolution.CreateSession(() => scope))
+using (var aspectSession = SessionOn<IResolution<EvaluationLogging>>.Create(resolution.CreateContext(scope)))
 {
     var i = 15;
-    static void runAspect(in EvaluationLogging evaluationLogging, int number) => evaluationLogging.Run(number);
-    
+    static void runAspect(in IResolution<EvaluationLogging> aspectResolution, int number) => aspectResolution.Result.Run(number);
+
     aspectSession.Execute(runAspect, i++);
     aspectSession.Execute(runAspect, i++);
     aspectSession.Execute(runAspect, i++);
@@ -38,6 +39,6 @@ using (var aspectSession = resolution.CreateSession(() => scope))
         aspectSession.Execute(runAspect, i++);
         subScopedHost.Execute(runAspect, i++);
     }
-   
+
     aspectSession.Execute(runAspect, i++);
 }
