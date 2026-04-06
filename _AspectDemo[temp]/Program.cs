@@ -1,7 +1,9 @@
 ﻿using AspectDemo;
 using AspectDemo.Aspects.Logging;
+
 using AspectEngine.ProxiedResolution;
-using AspectEngine.ProxiedResolution.IResolutionContextExtensions;
+using AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection;
+
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +15,10 @@ var host = Host.CreateDefaultBuilder(args)
 
                    services.AddSingleton<IResolutionMetadata<EvaluationLogging>, EvaluationLoggingMetadata>(provider =>
                    {
-                       static object loggerResolution(object serviceProvider) => (serviceProvider as IServiceProvider).GetRequiredService<IPseudoLog>();
+                       static object loggerResolution(object serviceProvider)
+                       {
+                           return (serviceProvider as IServiceProvider).GetRequiredService<IPseudoLog>();
+                       } 
 
                        return new(loggerResolution);
                    });
@@ -21,24 +26,23 @@ var host = Host.CreateDefaultBuilder(args)
                .Build();
 
 
-var resolution = host.Services.GetRequiredService<IResolutionMetadata<EvaluationLogging>>();
+var resolutionMetadata = host.Services.GetRequiredService<IResolutionMetadata<EvaluationLogging>>();
 
 using (var scope = host.Services.CreateScope())
-using (var aspectSession = SessionOn<IResolution<EvaluationLogging>>.Create(resolution.CreateContext(scope)))
+using (var aspect = resolutionMetadata.Create(scope))
 {
     var i = 15;
-    static void runAspect(in IResolution<EvaluationLogging> aspectResolution, int number) => aspectResolution.Result.Run(number);
 
-    aspectSession.Execute(runAspect, i++);
-    aspectSession.Execute(runAspect, i++);
-    aspectSession.Execute(runAspect, i++);
+    aspect.Run(i++);
+    aspect.Run(i++); 
+    aspect.Run(i++);
 
     using (var subScope = scope.ServiceProvider.CreateScope())
-    using (var subScopedHost = resolution.CreateSession(() => subScope))
+    using (var subScopedAspect = resolutionMetadata.Create(subScope))
     {
-        aspectSession.Execute(runAspect, i++);
-        subScopedHost.Execute(runAspect, i++);
+        subScopedAspect.Run(i++);
+        subScopedAspect.Run(i++);
     }
 
-    aspectSession.Execute(runAspect, i++);
+    aspect.Run(i++);
 }
