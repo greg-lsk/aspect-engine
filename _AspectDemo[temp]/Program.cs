@@ -29,18 +29,17 @@ var host = Host.CreateDefaultBuilder(args)
 var resolutionMetadata = host.Services.GetRequiredService<IResolutionMetadata<EvaluationLogging>>();
 
 using (var scope = host.Services.CreateScope())
-using (var aspect = resolutionMetadata.Create(scope))
+using (var aspect = resolutionMetadata.Materialize(scope))
 {
     var i = 15;
 
     aspect.Run(i++);
     aspect.Run(i++); 
-    aspect.Run(i++);
 
     using (var subScope = scope.ServiceProvider.CreateScope())
-    using (var subScopedAspect = resolutionMetadata.Create(subScope))
+    using (var subScopedAspect = resolutionMetadata.Materialize(subScope))
     {
-        subScopedAspect.Run(i++);
+        aspect.Run(i++);
         subScopedAspect.Run(i++);
     }
 
