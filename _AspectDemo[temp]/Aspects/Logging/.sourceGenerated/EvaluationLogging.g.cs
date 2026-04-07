@@ -1,16 +1,20 @@
-﻿namespace AspectDemo.Aspects.Logging;
+﻿using AspectEngine.ProxiedResolution;
+
+
+namespace AspectDemo.Aspects.Logging;
 
 internal readonly partial struct EvaluationLogging 
-    : AspectEngine.ProxiedResolution.IResolutionContextHolder<EvaluationLogging>
 {
-    private readonly AspectEngine.ProxiedResolution.IResolutionContext<EvaluationLogging> _aspectContext;
-    AspectEngine.ProxiedResolution.IResolutionContext<EvaluationLogging> AspectEngine.ProxiedResolution.IResolutionContextHolder<EvaluationLogging>.ResolutionContext
-        => _aspectContext;
+    private readonly ResolutionSource _resolutionSource;
+    private readonly IResolutionMetadata<EvaluationLogging> _resolutionMetadata;
 
-    private partial AspectDemo.IPseudoLog Logger => (AspectDemo.IPseudoLog) _aspectContext.Run((_aspectContext.ResolutionMetadata as EvaluationLoggingMetadata).LoggerResolution);
+    private partial IPseudoLog Logger => (_resolutionMetadata as EvaluationLoggingMetadata).LoggerResolution(in _resolutionSource);
 
-    internal EvaluationLogging(AspectEngine.ProxiedResolution.IResolutionContext<EvaluationLogging> aspectContext)
+
+    internal EvaluationLogging(in ResolutionSource resolutionSource,
+                               IResolutionMetadata<EvaluationLogging> resolutionMetadata)
     {
-        _aspectContext = aspectContext;
+        _resolutionSource = resolutionSource;
+        _resolutionMetadata = resolutionMetadata;
     }
 }

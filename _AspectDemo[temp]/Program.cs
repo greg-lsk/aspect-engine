@@ -15,12 +15,18 @@ var host = Host.CreateDefaultBuilder(args)
 
                    services.AddSingleton<IResolutionMetadata<EvaluationLogging>, EvaluationLoggingMetadata>(provider =>
                    {
-                       static object loggerResolution(object serviceProvider)
+                       static T genericResolution<T>(object serviceProvider) where T : notnull
                        {
-                           return (serviceProvider as IServiceProvider).GetRequiredService<IPseudoLog>();
+                           return (serviceProvider as IServiceProvider).GetRequiredService<T>();
+                       }
+
+                       static IPseudoLog loggerResolution(in ResolutionSource resolutionSource)
+                       {
+                           return ResolutionHandler.Create()
+                                                   .Execute(genericResolution<IPseudoLog>, in resolutionSource);
                        } 
 
-                       return new(loggerResolution);
+                       return new(provider, loggerResolution);
                    });
                })
                .Build();
@@ -29,19 +35,32 @@ var host = Host.CreateDefaultBuilder(args)
 var resolutionMetadata = host.Services.GetRequiredService<IResolutionMetadata<EvaluationLogging>>();
 
 using (var scope = host.Services.CreateScope())
-using (var aspect = resolutionMetadata.Materialize(scope))
 {
     var i = 15;
 
-    aspect.Run(i++);
-    aspect.Run(i++); 
+    var hostAspect = resolutionMetadata.Materialize();
+    var scopeAspect = resolutionMetadata.Materialize(scope);
+    
+    
+    scopeAspect.Run(i++);
+    await AsynTask(resolutionMetadata, scope);
+    hostAspect.Run(i++); 
 
     using (var subScope = scope.ServiceProvider.CreateScope())
-    using (var subScopedAspect = resolutionMetadata.Materialize(subScope))
     {
-        aspect.Run(i++);
-        subScopedAspect.Run(i++);
+        var subScopeAspect = resolutionMetadata.Materialize(subScope);
+
+        scopeAspect.Run(i++);
+        subScopeAspect.Run(i++);
     }
 
-    aspect.Run(i++);
+    scopeAspect.Run(i++);
+}
+
+static async Task AsynTask(IResolutionMetadata<EvaluationLogging> metadata, IServiceScope scope)
+{
+    var aspect = metadata.Materialize(scope);
+
+    await Task.Delay(500);
+    aspect.Run(0);
 }

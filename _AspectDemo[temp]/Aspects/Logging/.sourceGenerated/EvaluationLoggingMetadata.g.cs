@@ -1,20 +1,24 @@
-﻿namespace AspectDemo.Aspects.Logging;
+﻿using AspectEngine.ProxiedResolution;
 
-internal class EvaluationLoggingMetadata : 
-    AspectEngine.ProxiedResolution.IResolutionMetadata<EvaluationLogging>,
-    AspectEngine.ProxiedResolution.ICreator<EvaluationLogging>
+
+namespace AspectDemo.Aspects.Logging;
+
+internal class EvaluationLoggingMetadata : ResolutionMetadata<EvaluationLogging>
 {
-    internal AspectEngine.ProxiedResolution.Resolution LoggerResolution { get; }
+    internal MetaResolution<IPseudoLog> LoggerResolution { get; }
 
 
-    internal EvaluationLoggingMetadata(AspectEngine.ProxiedResolution.Resolution loggerResolution)
+    internal EvaluationLoggingMetadata(
+        object hostingContainer,
+        MetaResolution<IPseudoLog> loggerResolution) : base(hostingContainer)
     {
         LoggerResolution = loggerResolution;
     }
 
 
-    EvaluationLogging AspectEngine.ProxiedResolution.ICreator<EvaluationLogging>.Create(in AspectEngine.ProxiedResolution.IResolutionContext<EvaluationLogging> resolutionContext)
+    public override EvaluationLogging Materialize(IResolutionMetadata<EvaluationLogging> resolutionMetadata,
+                                                  in ResolutionSource resolutionSource)
     {
-        return new(resolutionContext);
+        return new(in resolutionSource, resolutionMetadata);
     }
 }
