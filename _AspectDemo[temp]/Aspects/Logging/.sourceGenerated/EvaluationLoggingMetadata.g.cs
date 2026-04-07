@@ -10,15 +10,9 @@ internal class EvaluationLoggingMetadata : ResolutionMetadata<EvaluationLogging>
 
     internal EvaluationLoggingMetadata(
         object hostingContainer,
-        MetaResolution<IPseudoLog> loggerResolution) : base(hostingContainer)
+        Materialize<EvaluationLogging> materialize,
+        MetaResolution<IPseudoLog> loggerResolution) : base(hostingContainer, materialize)
     {
         LoggerResolution = loggerResolution;
-    }
-
-
-    public override EvaluationLogging Materialize(IResolutionMetadata<EvaluationLogging> resolutionMetadata,
-                                                  in ResolutionSource resolutionSource)
-    {
-        return new(in resolutionSource, resolutionMetadata);
     }
 }

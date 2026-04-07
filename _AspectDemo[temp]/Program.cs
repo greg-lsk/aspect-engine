@@ -15,6 +15,12 @@ var host = Host.CreateDefaultBuilder(args)
 
                    services.AddSingleton<IResolutionMetadata<EvaluationLogging>, EvaluationLoggingMetadata>(provider =>
                    {
+                       static EvaluationLogging materialize(IResolutionMetadata<EvaluationLogging> metadata,
+                                                            in ResolutionSource resolutionSource)
+                       {
+                           return new(metadata, in resolutionSource);
+                       }
+
                        static T genericResolution<T>(object serviceProvider) where T : notnull
                        {
                            return (serviceProvider as IServiceProvider).GetRequiredService<T>();
@@ -26,7 +32,7 @@ var host = Host.CreateDefaultBuilder(args)
                                                    .Execute(genericResolution<IPseudoLog>, in resolutionSource);
                        } 
 
-                       return new(provider, loggerResolution);
+                       return new(provider, materialize, loggerResolution);
                    });
                })
                .Build();
