@@ -9,6 +9,6 @@ public static class IResolutionMetadataExtensions
         where T : struct
     {
         var source = ResolutionSource.Create(resolutionMetadata, scope);
-        return resolutionMetadata.Materialize(resolutionMetadata, in source);
+        return (resolutionMetadata as ResolutionMetadata<T>).Materialize(resolutionMetadata, in source);
     }
 }

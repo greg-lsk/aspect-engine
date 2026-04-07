@@ -3,16 +3,12 @@
 public abstract class ResolutionMetadata<T> : IResolutionMetadata<T>
     where T : struct
 {
-    private readonly object _hostingContainer;
+    internal object HostingContainer { get; }
+    internal Materialize<T> Materialize { get; }
 
-    internal object HostingContainer => _hostingContainer;
-
-
-    protected ResolutionMetadata(object hostingContainer)
+    protected ResolutionMetadata(object hostingContainer, Materialize<T> materialize)
     {
-        _hostingContainer = hostingContainer;
+        HostingContainer = hostingContainer;
+        Materialize = materialize;
     }
-
-
-    public abstract T Materialize(IResolutionMetadata<T> resolutionMetadata, in ResolutionSource resolutionSource);
 }
