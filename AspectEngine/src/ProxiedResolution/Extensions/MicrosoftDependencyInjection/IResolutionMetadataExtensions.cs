@@ -8,7 +8,6 @@ public static class IResolutionMetadataExtensions
     public static T Materialize<T>(this IResolutionMetadata<T> resolutionMetadata, IServiceScope? scope = null) 
         where T : struct
     {
-        var source = ResolutionSource.Create(resolutionMetadata, scope);
-        return (resolutionMetadata as ResolutionMetadata<T>).Materialize(resolutionMetadata, in source);
+        return (resolutionMetadata as ResolutionMetadata<T>).Materialize(resolutionMetadata, scope);
     }
 }
