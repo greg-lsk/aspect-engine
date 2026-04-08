@@ -11,10 +11,11 @@ internal readonly partial struct EvaluationLogging
     private partial IPseudoLog Logger => (_resolutionMetadata as EvaluationLoggingMetadata).LoggerResolution(in _resolutionSource);
 
 
-    internal EvaluationLogging(IResolutionMetadata<EvaluationLogging> resolutionMetadata,
-                               in ResolutionSource resolutionSource)
+    internal EvaluationLogging(object resolutionSource,
+                               IResolutionMetadata<EvaluationLogging> resolutionMetadata,
+                               IResolutionMetadataUtills resolutionMetadataUtills)
     {
-        _resolutionSource = resolutionSource;
+        _resolutionSource = resolutionMetadataUtills.CreateResolutionSource<EvaluationLogging>(resolutionMetadata, resolutionSource);
         _resolutionMetadata = resolutionMetadata;
     }
 }
