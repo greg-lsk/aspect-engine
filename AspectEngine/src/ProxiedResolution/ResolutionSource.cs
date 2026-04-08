@@ -9,7 +9,7 @@ public readonly struct ResolutionSource
     {
         Instance = resolutionSource;
     }
-    public static ResolutionSource Create<T>(IResolutionMetadata<T> resolutionMetadata, object? resolutionSource) 
+    internal static ResolutionSource Create<T>(IResolutionMetadata<T> resolutionMetadata, object? resolutionSource) 
         where T : struct
     {
         var source = resolutionSource is not null 
