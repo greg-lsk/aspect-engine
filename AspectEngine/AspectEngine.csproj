@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Include=".config\GlobalSuppressions.cs" />
+    <Compile Include="src\ProxiedResolution\.Internals\Resolution.cs" />
     <Compile Include="src\ProxiedResolution\.Internals\ResolutionMetadataUtills.cs" />
   </ItemGroup>
 
