@@ -2,9 +2,6 @@
 
 internal class ResolutionMetadataUtills : IResolutionMetadataUtills
 {
-    internal ResolutionMetadataUtills() { }
-
-
     public ResolutionSource CreateResolutionSource<T>(IResolutionMetadata<T> resolutionMetadata, object? resolutionSource) 
         where T : struct
     {
