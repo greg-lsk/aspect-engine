@@ -2,5 +2,5 @@
 
 public interface IResolutionMetadataHandler
 {
-    public TService Execution<TService>(ServiceResolution<TService> resolution) where TService : class;
+    public TService Execute<TService>(ServiceResolution<TService> resolution) where TService : class;
 }
