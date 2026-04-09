@@ -4,14 +4,15 @@ using AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection.Int
 
 namespace AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection;
 
-public static class IResolutionMetadataHandlerExtensions
+public static class IResolutionUtillsExtensions
 {
-    public static IServiceCollection AddResolutionMetadataHandler(this IServiceCollection services)
+    public static IServiceCollection AddResolutionUtills(this IServiceCollection services)
     {
         services.AddSingleton<IResolutionUtills, ResolutionUtills>(provider =>
         {
             return new(() => provider);
         });
+
         return services;
     }
 }
