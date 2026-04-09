@@ -2,5 +2,5 @@
 
 public interface IResolution<T> where T : struct
 {
-    public T Run();
+    public T Invoke();
 }
