@@ -5,17 +5,18 @@ namespace AspectDemo.Aspects.Logging;
 
 internal readonly partial struct EvaluationLogging 
 {
-    private readonly ResolutionSource _resolutionSource;
     private readonly IResolutionMetadata<EvaluationLogging> _resolutionMetadata;
+    private readonly IResolutionMetadataHandler _resolutionMetadataHandler;
 
-    private partial IPseudoLog Logger => (_resolutionMetadata as EvaluationLoggingMetadata).LoggerResolution(in _resolutionSource);
+
+    private partial IPseudoLog Logger 
+        => _resolutionMetadataHandler.Execution((_resolutionMetadata as EvaluationLoggingMetadata).LoggerResolution);
 
 
-    internal EvaluationLogging(object resolutionSource,
-                               IResolutionMetadata<EvaluationLogging> resolutionMetadata,
-                               IResolutionMetadataUtills resolutionMetadataUtills)
+    internal EvaluationLogging(IResolutionMetadata<EvaluationLogging> resolutionMetadata,
+                               IResolutionMetadataHandler resolutionMetadataHandler)
     {
-        _resolutionSource = resolutionMetadataUtills.CreateResolutionSource<EvaluationLogging>(resolutionMetadata, resolutionSource);
         _resolutionMetadata = resolutionMetadata;
+        _resolutionMetadataHandler = resolutionMetadataHandler;
     }
 }

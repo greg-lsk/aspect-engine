@@ -3,16 +3,20 @@
 
 namespace AspectDemo.Aspects.Logging;
 
-internal class EvaluationLoggingMetadata : ResolutionMetadata<EvaluationLogging>
+internal class EvaluationLoggingMetadata : IResolutionMetadata<EvaluationLogging>
 {
-    internal MetaResolution<IPseudoLog> LoggerResolution { get; }
+    internal ServiceResolution<IPseudoLog> LoggerResolution { get; }
 
 
     internal EvaluationLoggingMetadata(
-        object hostingContainer,
-        Materialize<EvaluationLogging> materialize,
-        MetaResolution<IPseudoLog> loggerResolution) : base(hostingContainer, materialize)
+        ServiceResolution<IPseudoLog> loggerResolution)
     {
         LoggerResolution = loggerResolution;
+    }
+
+
+    public EvaluationLogging Materialize(IResolutionMetadataHandler metadataHandler)
+    {
+        return new(this, metadataHandler);
     }
 }
