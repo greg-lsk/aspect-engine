@@ -2,5 +2,5 @@
 
 public interface IResolutionMetadata<T> where T : struct 
 { 
-    public T Materialize(IResolutionMetadataHandler metadataHandler);
+    public T Materialize(IResolutionUtills utills);
 }
