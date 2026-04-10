@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
 using SlimResolutionCore;
-using SlimResolutionMcSoftDIExtensions.Internals;
+using SlimResolutionCore.src.ExtensionHelpers;
 
 
 namespace SlimResolutionMcSoftDIExtensions;
@@ -13,12 +13,12 @@ public static class IComposerExtensions
     {
         var context = RegistrationHelper.CreateContext(() => scope.ServiceProvider);
 
-        return (composer as Composer<TResolved>).Metadata.Materialize(context);
+        return ExtensionContext.Instance.Matarialize(composer, context);
     }
 
     public static IServiceCollection AddComposer(this IServiceCollection services)
     {
-        services.AddSingleton(typeof(IComposer<>), typeof(Composer<>));
+        services.AddSingleton(typeof(IComposer<>), ExtensionContext.Instance.GetComposerType());
         return services;
     }
 }

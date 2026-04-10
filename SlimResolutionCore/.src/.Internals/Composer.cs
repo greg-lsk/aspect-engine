@@ -1,7 +1,4 @@
-﻿using SlimResolutionCore;
-
-
-namespace SlimResolutionMcSoftDIExtensions.Internals;
+﻿namespace SlimResolutionCore.Internals;
 
 internal class Composer<T> : IComposer<T> where T : struct
 {
