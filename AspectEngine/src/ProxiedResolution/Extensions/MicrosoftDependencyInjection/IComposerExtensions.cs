@@ -4,7 +4,7 @@ using AspectEngine.ProxiedResolution.Internals;
 
 namespace AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection;
 
-public static class IResolutionExtensions
+public static class IComposerExtensions
 {
     public static TResolved ComposeFor<TResolved>(this IComposer<TResolved> composer, IServiceScope scope)
         where TResolved : struct

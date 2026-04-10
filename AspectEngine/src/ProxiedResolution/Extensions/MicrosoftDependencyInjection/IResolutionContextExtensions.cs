@@ -4,7 +4,7 @@ using AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection.Int
 
 namespace AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection;
 
-public static class IResolutionUtillsExtensions
+public static class IResolutionContextExtensions
 {
     public static IServiceCollection AddResolutionContext(this IServiceCollection services)
     {
