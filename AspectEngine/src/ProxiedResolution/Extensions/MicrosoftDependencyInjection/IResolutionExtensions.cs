@@ -6,17 +6,17 @@ namespace AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection
 
 public static class IResolutionExtensions
 {
-    public static TResolved Invoke<TResolved>(this IResolution<TResolved> resolution, IServiceScope scope)
+    public static TResolved ComposeFor<TResolved>(this IComposer<TResolved> composer, IServiceScope scope)
         where TResolved : struct
     {
-        var utill = RegistrationHelper.Create(() => scope.ServiceProvider);
+        var context = RegistrationHelper.CreateContext(() => scope.ServiceProvider);
 
-        return (resolution as Resolution<TResolved>).Metadata.Materialize(utill);
+        return (composer as Composer<TResolved>).Metadata.Materialize(context);
     }
 
-    public static IServiceCollection AddResolution(this IServiceCollection services)
+    public static IServiceCollection AddComposer(this IServiceCollection services)
     {
-        services.AddSingleton(typeof(IResolution<>), typeof(Resolution<>));
+        services.AddSingleton(typeof(IComposer<>), typeof(Composer<>));
         return services;
     }
 }

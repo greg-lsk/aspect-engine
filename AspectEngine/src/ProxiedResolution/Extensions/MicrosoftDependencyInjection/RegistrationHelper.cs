@@ -8,12 +8,13 @@ namespace AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection
 
 public static class RegistrationHelper
 {
-    public static TS GenericResolution<TS>(IResolutionUtills metadataHandler) where TS : notnull
+    public static TService GenericResolution<TService>(IResolutionContext context) 
+        where TService : notnull
     {
-        return (metadataHandler as ResolutionUtills).ResolutionSource().GetRequiredService<TS>();
+        return (context as ResolutionContext).ProviderSelector().GetRequiredService<TService>();
     }
 
-    internal static ResolutionUtills Create(Func<IServiceProvider> providerSelector)
+    internal static ResolutionContext CreateContext(Func<IServiceProvider> providerSelector)
     {
         return new(providerSelector);
     }

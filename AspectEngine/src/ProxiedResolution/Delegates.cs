@@ -1,3 +1,3 @@
 ﻿namespace AspectEngine.ProxiedResolution;
 
-public delegate T ServiceResolution<T>(IResolutionUtills metadataHandler) where T : notnull;
+public delegate T ServiceResolution<T>(IResolutionContext context) where T : notnull;

@@ -15,8 +15,8 @@ internal class EvaluationLoggingMetadata : IResolutionMetadata<EvaluationLogging
     }
 
 
-    public EvaluationLogging Materialize(IResolutionMetadataHandler metadataHandler)
+    public EvaluationLogging Materialize(IResolutionContext context)
     {
-        return new(this, metadataHandler);
+        return new(this, context);
     }
 }

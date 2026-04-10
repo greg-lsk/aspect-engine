@@ -13,29 +13,27 @@ var host = Host.CreateDefaultBuilder(args)
                {
                    services.AddScoped<IPseudoLog, PseudoLog>();
 
-                   services.AddResolution()
-                           .AddResolutionMetadataHandler();
+                   services.AddComposer()
+                           .AddResolutionContext();
 
                    services.AddSingleton<IResolutionMetadata<EvaluationLogging>, EvaluationLoggingMetadata>(provider =>
                    {
-                       static T genericResolution<T>(object serviceProvider) where T : notnull
-                       {
-                           return (serviceProvider as IServiceProvider).GetRequiredService<T>();
-                       }
-
-                       return new(genericResolution<IPseudoLog>);
+                        return new(RegistrationHelper.GenericResolution<IPseudoLog>);
                    });
                })
                .Build();
 
 
-var aspectResolution = host.Services.GetRequiredService<IResolution<EvaluationLogging>>();
+var aspectComposer = host.Services.GetRequiredService<IComposer<EvaluationLogging>>();
 
 using (var scope = host.Services.CreateScope())
 {
     var i = 15;
-    var hostAspect = aspectResolution.Invoke();
+    var hostAspect = aspectComposer.Compose();
+    var scopedAspect = aspectComposer.ComposeFor(scope);
 
     hostAspect.Run(i++);
     hostAspect.Run(i++);
+
+    scopedAspect.Run(i++);
 }

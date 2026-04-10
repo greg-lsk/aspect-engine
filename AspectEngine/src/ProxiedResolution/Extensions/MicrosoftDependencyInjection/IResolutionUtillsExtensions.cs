@@ -6,9 +6,9 @@ namespace AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection
 
 public static class IResolutionUtillsExtensions
 {
-    public static IServiceCollection AddResolutionUtills(this IServiceCollection services)
+    public static IServiceCollection AddResolutionContext(this IServiceCollection services)
     {
-        services.AddSingleton<IResolutionUtills, ResolutionUtills>(provider =>
+        services.AddSingleton<IResolutionContext, ResolutionContext>(provider =>
         {
             return new(() => provider);
         });

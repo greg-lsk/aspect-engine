@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <Compile Include=".config\GlobalSuppressions.cs" />
-    <Compile Include="src\ProxiedResolution\.Internals\Resolution.cs" />
-    <Compile Include="src\ProxiedResolution\Extensions\MicrosoftDependencyInjection\.Internals\ResolutionUtills.cs" />
+    <Compile Include="src\ProxiedResolution\.Internals\Composer.cs" />
+    <Compile Include="src\ProxiedResolution\Extensions\MicrosoftDependencyInjection\.Internals\ResolutionContext.cs" />
   </ItemGroup>
 
   <ItemGroup>
