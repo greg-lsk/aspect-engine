@@ -1,10 +1,12 @@
 ﻿using System;
 
+using SlimResolutionCore;
+using SlimResolutionMcSoftDIExtensions.Internals;
+
 using Microsoft.Extensions.DependencyInjection;
-using AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection.Internals;
 
 
-namespace AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection;
+namespace SlimResolutionMcSoftDIExtensions;
 
 public static class RegistrationHelper
 {

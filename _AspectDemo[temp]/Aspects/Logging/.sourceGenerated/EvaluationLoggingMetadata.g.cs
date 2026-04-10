@@ -1,15 +1,15 @@
-﻿using AspectEngine.ProxiedResolution;
+﻿using SlimResolutionCore;
 
 
 namespace AspectDemo.Aspects.Logging;
 
 internal class EvaluationLoggingMetadata : IResolutionMetadata<EvaluationLogging>
 {
-    internal ServiceResolution<IPseudoLog> LoggerResolution { get; }
+    internal Resolution<IPseudoLog> LoggerResolution { get; }
 
 
     internal EvaluationLoggingMetadata(
-        ServiceResolution<IPseudoLog> loggerResolution)
+        Resolution<IPseudoLog> loggerResolution)
     {
         LoggerResolution = loggerResolution;
     }

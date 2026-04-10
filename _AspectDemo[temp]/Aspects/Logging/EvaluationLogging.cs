@@ -1,5 +1,5 @@
 ﻿using AspectEngine;
-using AspectEngine.ProxiedResolution;
+using SlimResolutionCore;
 
 
 namespace AspectDemo.Aspects.Logging;

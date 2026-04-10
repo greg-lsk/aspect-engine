@@ -1,4 +1,4 @@
-﻿namespace AspectEngine.ProxiedResolution;
+﻿namespace SlimResolutionCore;
 
 public interface IResolutionMetadata<T> where T : struct 
 { 

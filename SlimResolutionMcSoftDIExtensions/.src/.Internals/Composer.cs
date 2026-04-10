@@ -1,4 +1,7 @@
-﻿namespace AspectEngine.ProxiedResolution.Internals;
+﻿using SlimResolutionCore;
+
+
+namespace SlimResolutionMcSoftDIExtensions.Internals;
 
 internal class Composer<T> : IComposer<T> where T : struct
 {

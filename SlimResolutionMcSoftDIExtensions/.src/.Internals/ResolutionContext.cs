@@ -1,7 +1,8 @@
 ﻿using System;
+using SlimResolutionCore;
 
 
-namespace AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection.Internals;
+namespace SlimResolutionMcSoftDIExtensions.Internals;
 
 internal class ResolutionContext : IResolutionContext
 {

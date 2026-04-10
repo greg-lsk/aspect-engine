@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AspectEngine\AspectEngine.csproj" />
+    <ProjectReference Include="..\SlimResolutionMcSoftDIExtensions\SlimResolutionMcSoftDIExtensions.csproj" />
   </ItemGroup>
 
 </Project>

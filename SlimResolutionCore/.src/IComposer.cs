@@ -1,4 +1,4 @@
-﻿namespace AspectEngine.ProxiedResolution;
+﻿namespace SlimResolutionCore;
 
 public interface IComposer<T> where T : struct
 {

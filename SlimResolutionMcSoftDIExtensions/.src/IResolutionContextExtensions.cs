@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection.Internals;
+
+using SlimResolutionCore;
+using SlimResolutionMcSoftDIExtensions.Internals;
 
 
-namespace AspectEngine.ProxiedResolution.Extensions.MicrosoftDependencyInjection;
+namespace SlimResolutionMcSoftDIExtensions;
 
 public static class IResolutionContextExtensions
 {

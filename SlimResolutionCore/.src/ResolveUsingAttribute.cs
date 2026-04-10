@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace AspectEngine.ProxiedResolution;
+namespace SlimResolutionCore;
 
 [AttributeUsage(AttributeTargets.Struct)]
 public class ResolveUsingAttribute<T> : Attribute
