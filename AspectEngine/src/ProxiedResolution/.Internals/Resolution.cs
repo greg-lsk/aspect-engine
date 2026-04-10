@@ -2,16 +2,16 @@
 
 internal class Resolution<T> : IResolution<T> where T : struct
 {
-    private readonly IResolutionMetadata<T> _metadata;
-    private readonly IResolutionUtills _utills;
+    internal readonly IResolutionMetadata<T> Metadata;
+    internal readonly IResolutionUtills Utills;
 
 
     public Resolution(IResolutionMetadata<T> metadata, IResolutionUtills utills)
     {
-        _metadata = metadata;
-        _utills = utills;
+        Metadata = metadata;
+        Utills = utills;
     }
 
 
-    public T Invoke() => _metadata.Materialize(_utills);
+    public T Invoke() => Metadata.Materialize(Utills);
 }
