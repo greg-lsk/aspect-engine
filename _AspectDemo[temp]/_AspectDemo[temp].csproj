@@ -11,8 +11,6 @@
 
   <ItemGroup>
     <Compile Include="Aspects\Chains\.sourceGenerated\EvaluationAspectChain.sg.cs" />
-    <Compile Include="Aspects\Logging\.sourceGenerated\EvaluationLogging.g.cs" />
-    <Compile Include="Aspects\Logging\.sourceGenerated\EvaluationLoggingMetadata.g.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AspectEngine\AspectEngine.csproj" />
-    <ProjectReference Include="..\SlimResolutionMcSoftDIExtensions\SlimResolutionMcSoftDIExtensions.csproj" />
   </ItemGroup>
 
 </Project>

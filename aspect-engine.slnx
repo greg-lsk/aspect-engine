@@ -1,6 +1,4 @@
 <Solution>
   <Project Path="AspectEngine/AspectEngine.csproj" />
-  <Project Path="SlimResolutionCore/SlimResolutionCore.csproj" Id="1f120a50-0c8a-46a2-ada9-3d4213c64642" />
-  <Project Path="SlimResolutionMcSoftDIExtensions/SlimResolutionMcSoftDIExtensions.csproj" Id="25b37578-1761-4c35-b5bc-63c9939db7cc" />
   <Project Path="_AspectDemo[temp]/_AspectDemo[temp].csproj" Id="8b829c72-78c3-454c-bbcb-e8d567fe014c" />
 </Solution>
